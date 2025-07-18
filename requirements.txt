@@ -12,3 +12,4 @@ whisper
 pyarrow
 fastapi
 uvicorn[standard]
+fastparquet
