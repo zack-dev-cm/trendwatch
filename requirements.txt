@@ -10,5 +10,6 @@ python-dotenv
 rich
 whisper
 pyarrow
+fastparquet
 fastapi
 uvicorn[standard]
