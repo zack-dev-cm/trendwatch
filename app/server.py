@@ -7,10 +7,57 @@ from fastapi.staticfiles import StaticFiles
 
 DATA_PATH = os.getenv("DATA_PATH", "/data/trendwatch.parquet")
 
-if not os.path.exists(DATA_PATH):
-    raise FileNotFoundError(f"DATA_PATH '{DATA_PATH}' does not exist")
 
-_df = pd.read_parquet(DATA_PATH)
+def _generate_sample_df(path: str) -> pd.DataFrame:
+    """Create a tiny placeholder dataset and save it to ``path``."""
+    data = [
+        {
+            "video_id": "dQw4w9WgXcQ",
+            "title": "Never Gonna Give You Up",
+            "description": "Classic hit used as example data.",
+            "captions": "We're no strangers to love...",
+            "publish_dt": "1987-07-27T00:00:00+00:00",
+            "views": 1000000,
+            "likes": 50000,
+            "virality_score": 123.4,
+            "topic": "example",
+            "catchy_factors": "classic; catchy tune",
+        },
+        {
+            "video_id": "2vjPBrBU-TM",
+            "title": "Chandelier",
+            "description": "Another demo record for testing.",
+            "captions": "Party girls don't get hurt...",
+            "publish_dt": "2014-03-06T00:00:00+00:00",
+            "views": 2000000,
+            "likes": 150000,
+            "virality_score": 456.7,
+            "topic": "demo",
+            "catchy_factors": "dance; pop",
+        },
+        {
+            "video_id": "kJQP7kiw5Fk",
+            "title": "Despacito",
+            "description": "Third sample video entry.",
+            "captions": "Ay Fonsi...",
+            "publish_dt": "2017-01-12T00:00:00+00:00",
+            "views": 5000000,
+            "likes": 300000,
+            "virality_score": 789.0,
+            "topic": "latin",
+            "catchy_factors": "viral; upbeat",
+        },
+    ]
+    df = pd.DataFrame(data)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    df.to_parquet(path, index=False)
+    return df
+
+
+if os.path.exists(DATA_PATH):
+    _df = pd.read_parquet(DATA_PATH)
+else:
+    _df = _generate_sample_df(DATA_PATH)
 PORT = int(os.getenv("PORT", "8000"))
 API_TOKEN = os.getenv("API_TOKEN", "")
 

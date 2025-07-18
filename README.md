@@ -148,6 +148,9 @@ python -m app.pipeline --query "AI" --days 5 --out trend.csv
 DATA_PATH=trend.csv python -m app.server
 ```
 
+If `DATA_PATH` is unset or the file is missing, the server will create a small
+example dataset automatically.
+
 Then register `http://localhost:8000` as an MCP server in your test provider.
 
 ---

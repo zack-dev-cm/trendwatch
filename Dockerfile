@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # 3. copy code
 COPY app ./app
+RUN mkdir -p /data
 
 # 4. non-root user (Cloud Run best practice)
 RUN useradd -m svc
