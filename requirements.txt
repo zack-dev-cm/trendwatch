@@ -9,4 +9,5 @@ moviepy
 python-dotenv
 rich
 whisper
+fastapi
 uvicorn[standard]
