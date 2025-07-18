@@ -48,7 +48,10 @@ async def search(query: str):
 
 @mcp.tool()
 async def fetch(id: str):
-    row = _df.loc[_df.video_id == id].iloc[0]
+    sub = _df.loc[_df.video_id == id]
+    if sub.empty:
+        raise HTTPException(404, "Video not found")
+    row = sub.iloc[0]
     return {
         "id": id,
         "title": row.title,
