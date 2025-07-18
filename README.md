@@ -2,6 +2,12 @@
 
 This repo packages the Trendwatch YouTube Shorts pipeline and a small MCP server for Cloud Run.
 
+## UI
+https://trendwatch-1095464065298.us-east1.run.app
+## MCP 
+https://trendwatch-1095464065298.us-east1.run.app/sse
+
+
 ## Local Development
 
 ```bash
