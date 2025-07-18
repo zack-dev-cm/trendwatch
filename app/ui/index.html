@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Trendwatch Search</title>
+<script>
+async function go() {
+  const q = document.getElementById('q').value;
+  const r = await fetch('/search?query=' + encodeURIComponent(q));
+  const {results} = await r.json();
+  document.getElementById('out').innerHTML =
+    results.map(x => `<li><a href="${x.url}" target="_blank">${x.title}</a></li>`).join('');
+}
+</script>
+<input id="q" placeholder="search…" /><button onclick="go()">Go</button>
+<ul id="out"></ul>
