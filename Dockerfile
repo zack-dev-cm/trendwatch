@@ -17,6 +17,5 @@ USER svc
 
 ENV PYTHONUNBUFFERED=1
 ENV DATA_PATH=/data/trendwatch.parquet
-ENV PORT=8000
 
 CMD ["python", "-m", "app.server"]
