@@ -154,8 +154,8 @@ Then register `http://localhost:8000` as an MCP server in your test provider.
 
 ## 7 · References & Further Reading
 
-* **FastMCP Docs:** [https://github.com/openai-labs/fastmcp](https://github.com/openai-labs/fastmcp)
-* **OpenAI Cookbook – MCP examples:** [https://cookbook.openai.com/examples/mcp](https://cookbook.openai.com/examples/mcp)
+* **FastMCP Docs:** [https://github.com/jlowin/fastmcp](https://github.com/jlowin/fastmcp)
+* **OpenAI Cookbook – MCP examples:** [https://cookbook.openai.com/examples/partners/mcp_powered_voice_agents/mcp_powered_agents_cookbook](https://cookbook.openai.com/examples/partners/mcp_powered_voice_agents/mcp_powered_agents_cookbook)
 * **Building MCP Servers for Deep Research (PDF)** – see repo docs.
 
 ---
