@@ -9,5 +9,6 @@ moviepy
 python-dotenv
 rich
 whisper
+pyarrow
 fastapi
 uvicorn[standard]
