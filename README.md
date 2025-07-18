@@ -39,8 +39,7 @@
    }
    ```
 
-![Connecting ChatGPT](zack-dev-cm/trendwatch/app/ui/static/Screenshot 2025-07-18 at 23.04.11.png "Connecting ChatGPT MCP")
-
+![Connecting ChatGPT MCP](app/ui/static/mcp_chatgpt.png "Connecting ChatGPT MCP")
 3. Start a new chat, select **Deep Research** model (“o3‑mini‑deep‑research” or newer) and pick **Trendwatch Shorts** in the *Tools* dropdown.
 4. Test with: **“Find shorts about AI makeup tutorials.”**
 5. Inspect the trace link to confirm tool calls succeed.
