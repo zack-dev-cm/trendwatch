@@ -1,0 +1,12 @@
+fastmcp==0.4.*
+pandas
+openai
+tqdm
+google-api-python-client
+youtube_transcript_api
+pytube
+moviepy
+python-dotenv
+rich
+whisper
+uvicorn[standard]
