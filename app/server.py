@@ -6,6 +6,10 @@ from fastapi import Request, HTTPException
 from fastapi.staticfiles import StaticFiles
 
 DATA_PATH = os.getenv("DATA_PATH", "/data/trendwatch.parquet")
+
+if not os.path.exists(DATA_PATH):
+    raise FileNotFoundError(f"DATA_PATH '{DATA_PATH}' does not exist")
+
 _df = pd.read_parquet(DATA_PATH)
 PORT = int(os.getenv("PORT", "8000"))
 API_TOKEN = os.getenv("API_TOKEN", "")
@@ -15,11 +19,16 @@ mcp = FastMCP(
     instructions="Trending YouTube Shorts corpus for deep research",
 )
 
+
 @mcp.app.middleware("http")
 async def auth_header(request: Request, call_next):
-    if API_TOKEN and request.headers.get("Authorization") != f"Bearer {API_TOKEN}":
+    if (
+        API_TOKEN
+        and request.headers.get("Authorization") != f"Bearer {API_TOKEN}"
+    ):
         raise HTTPException(401, "Unauthorized")
     return await call_next(request)
+
 
 @mcp.tool()
 async def search(query: str):
@@ -35,6 +44,7 @@ async def search(query: str):
             "url": f"https://www.youtube.com/watch?v={r.video_id}",
         } for _, r in sub.iterrows()
     ]}
+
 
 @mcp.tool()
 async def fetch(id: str):
