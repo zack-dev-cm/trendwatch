@@ -13,4 +13,3 @@ pyarrow
 fastparquet
 fastapi
 uvicorn[standard]
-fastparquet

@@ -96,7 +96,7 @@ def search_shorts(yt, q: str, days_back: int, max_items: int) -> List[str]:
 
 def fetch_details(yt, ids: List[str]) -> pd.DataFrame:
     rows: List[Dict[str, Any]] = []
-    for chunk in [ids[i : i + 50] for i in range(0, len(ids), 50)]:
+    for chunk in [ids[i: i + 50] for i in range(0, len(ids), 50)]:
         data = yt.videos().list(id=",".join(chunk), part="snippet,statistics,contentDetails").execute()
         for item in data["items"]:
             stats = item.get("statistics", {})

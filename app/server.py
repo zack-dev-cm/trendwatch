@@ -22,20 +22,15 @@ mcp = FastMCP(
 
 @mcp.app.middleware("http")
 async def auth_header(request: Request, call_next):
-    if (
-        API_TOKEN
-        and request.headers.get("Authorization") != f"Bearer {API_TOKEN}"
-    ):
+    if API_TOKEN and request.headers.get("Authorization") != f"Bearer {API_TOKEN}":
         raise HTTPException(401, "Unauthorized")
     return await call_next(request)
 
 
 @mcp.tool()
 async def search(query: str):
-    sub = _df[
-        _df.title.str.contains(query, case=False, na=False)
-        | _df.description.str.contains(query, case=False, na=False)
-    ].head(20)
+    mask = (_df.title.str.contains(query, case=False, na=False) | _df.description.str.contains(query, case=False, na=False))
+    sub = _df[mask].head(20)
     return {"results": [
         {
             "id": r.video_id,
