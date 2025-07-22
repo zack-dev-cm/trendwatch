@@ -1,15 +1,21 @@
-from fastmcp import FastMCP
+import logging
 import os
-import pandas as pd
 import textwrap
-from fastapi import Request, HTTPException
+
+import pandas as pd
+from fastapi import HTTPException, Request
 from fastapi.staticfiles import StaticFiles
+from fastmcp import FastMCP
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 DATA_PATH = os.getenv("DATA_PATH", "/data/trendwatch.parquet")
 
 
 def _generate_sample_df(path: str) -> pd.DataFrame:
     """Create a tiny placeholder dataset and save it to ``path``."""
+    logger.info("Generating sample dataset at %s", path)
     data = [
         {
             "video_id": "dQw4w9WgXcQ",
@@ -56,8 +62,10 @@ def _generate_sample_df(path: str) -> pd.DataFrame:
 
 if os.path.exists(DATA_PATH):
     _df = pd.read_parquet(DATA_PATH)
+    logger.info("Loaded dataset from %s with %d rows", DATA_PATH, len(_df))
 else:
     _df = _generate_sample_df(DATA_PATH)
+    logger.info("Created sample dataset at %s", DATA_PATH)
 PORT = int(os.getenv("PORT", "8000"))
 API_TOKEN = os.getenv("API_TOKEN", "")
 
@@ -76,20 +84,27 @@ async def auth_header(request: Request, call_next):
 
 @mcp.tool()
 async def search(query: str):
-    mask = (_df.title.str.contains(query, case=False, na=False) | _df.description.str.contains(query, case=False, na=False))
+    mask = _df.title.str.contains(
+        query, case=False, na=False
+    ) | _df.description.str.contains(query, case=False, na=False)
     sub = _df[mask].head(20)
-    return {"results": [
-        {
-            "id": r.video_id,
-            "title": r.title,
-            "text": textwrap.shorten(r.description, 140),
-            "url": f"https://www.youtube.com/watch?v={r.video_id}",
-        } for _, r in sub.iterrows()
-    ]}
+    logger.info("search '%s' -> %d results", query, len(sub))
+    return {
+        "results": [
+            {
+                "id": r.video_id,
+                "title": r.title,
+                "text": textwrap.shorten(r.description, 140),
+                "url": f"https://www.youtube.com/watch?v={r.video_id}",
+            }
+            for _, r in sub.iterrows()
+        ]
+    }
 
 
 @mcp.tool()
 async def fetch(id: str):
+    logger.info("fetch '%s'", id)
     sub = _df.loc[_df.video_id == id]
     if sub.empty:
         raise HTTPException(404, "Video not found")
@@ -109,7 +124,9 @@ async def fetch(id: str):
         },
     }
 
+
 mcp.app.mount("/", StaticFiles(directory="app/ui", html=True), name="site")
 
 if __name__ == "__main__":
+    logger.info("Starting server on port %s", PORT)
     mcp.run(transport="sse", host="0.0.0.0", port=PORT)

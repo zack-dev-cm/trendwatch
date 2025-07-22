@@ -13,7 +13,7 @@ COPY app ./app
 RUN mkdir -p /data
 
 # 4. non-root user (Cloud Run best practice)
-RUN useradd -m svc
+RUN useradd -m svc && chown svc:svc /data
 USER svc
 
 ENV PYTHONUNBUFFERED=1
